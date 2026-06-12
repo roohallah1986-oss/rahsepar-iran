@@ -1,0 +1,1975 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ره‌سپار ایران</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f766e">
+  <style>
+    :root{
+      --bg:#f3f8f7;--card:#fff;--text:#102a2a;--muted:#607070;--brand:#0f766e;--brand2:#14b8a6;
+      --danger:#dc2626;--warn:#f59e0b;--ok:#16a34a;--line:#d8e5e2;--shadow:0 12px 30px rgba(15,118,110,.13)
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(180deg,#e9fffb,#f7faf9);color:var(--text)}
+    .app{max-width:980px;margin:auto;min-height:100vh;padding:14px}
+    .splash{position:fixed;inset:0;background:radial-gradient(circle,#eafffb,#0f766e);display:flex;align-items:center;justify-content:center;z-index:20;flex-direction:column;color:#fff}
+    .splash img{width:160px;height:160px;object-fit:contain;border-radius:34px;box-shadow:var(--shadow);background:white}
+    .splash h1{font-size:34px;text-shadow:0 3px 10px #064e3b}
+    .top{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:12px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand img{width:54px;height:54px;border-radius:16px;background:#fff;box-shadow:var(--shadow)}
+    .brand h1{font-size:28px;margin:0;color:var(--brand)}
+    .hero{position:relative;border-radius:28px;overflow:hidden;background:#d8f7f1;box-shadow:var(--shadow);min-height:170px;display:flex;align-items:center;justify-content:center}
+    .hero img{width:100%;max-height:260px;object-fit:cover}
+    .mail{position:absolute;top:12px;right:12px;border:0;border-radius:18px;padding:11px 14px;background:#fff;box-shadow:var(--shadow);font-size:22px;cursor:pointer}
+    .badge{background:var(--danger);color:#fff;border-radius:99px;padding:2px 7px;font-size:12px;vertical-align:top}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .btn{border:0;border-radius:18px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:15px 16px;font-size:17px;font-weight:700;cursor:pointer;box-shadow:var(--shadow)}
+    .btn.secondary{background:#fff;color:var(--brand);border:1px solid var(--line)}
+    .btn.danger{background:linear-gradient(135deg,#ef4444,#b91c1c)}
+    .btn.warn{background:linear-gradient(135deg,#f59e0b,#d97706)}
+    .btn:disabled{opacity:.48;cursor:not-allowed}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+    .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .field{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+    label{font-size:13px;color:var(--muted);font-weight:700}
+    input,select,textarea{border:1px solid var(--line);border-radius:14px;padding:12px;font-size:15px;background:#fbfffe;color:var(--text)}
+    textarea{min-height:96px;resize:vertical}
+    .mini{font-size:12px;color:var(--muted)}
+    .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#e6fffb;color:#0f766e;font-weight:700}
+    .calcbox{display:grid;grid-template-columns:1fr auto 1fr;gap:7px;align-items:center;border-bottom:1px dashed var(--line);padding:8px 0}
+    .money{font-weight:900;color:#064e3b}
+    .neg{color:#dc2626}
+    .pos{color:#16a34a}
+    .hidden{display:none!important}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:30;padding:16px}
+    .modal .box{max-width:720px;background:white;border-radius:24px;padding:20px;box-shadow:var(--shadow);line-height:2}
+    .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#102a2a;color:white;border-radius:999px;padding:12px 18px;z-index:40}
+    .listitem{border:1px solid var(--line);border-radius:18px;padding:12px;margin:8px 0;background:#fbfffe}
+    .toolbar{position:sticky;bottom:10px;background:rgba(255,255,255,.86);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:20px;padding:8px;display:flex;gap:8px;flex-wrap:wrap}
+    .printOnly{display:none}
+        .itemEntry{display:grid;grid-template-columns:1fr 54px;gap:8px;align-items:center}
+    .plusBtn{border:0;border-radius:14px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;font-size:26px;font-weight:900;height:46px;cursor:pointer;box-shadow:var(--shadow);line-height:1}
+    .plusBtn:disabled{opacity:.45;cursor:not-allowed}
+    .itemsLine{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;min-height:32px}
+    .itemChip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fbfffe;border-radius:999px;padding:7px 10px;font-size:13px;color:var(--text)}
+    .itemChip b{color:var(--brand)}
+    .itemEdit,.itemDelete{border:0;border-radius:999px;padding:4px 7px;cursor:pointer;font-size:12px}
+    .itemEdit{background:#e6fffb;color:var(--brand)}
+    .itemDelete{background:#fee2e2;color:var(--danger)}
+    .sumBox{margin-top:6px}
+    .lockedNote{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;border-radius:16px;padding:10px;margin-top:10px;font-size:13px;font-weight:700}
+    .editRequestBox{border:1px dashed var(--warn);background:#fffbeb;border-radius:18px;padding:12px;margin-top:12px}
+    @media(max-width:680px){.grid,.row{grid-template-columns:1fr}.brand h1{font-size:22px}.app{padding:10px}}
+    @media print{.noPrint,.toolbar,.btn,.top,.hero{display:none!important}.printOnly{display:block}.card{box-shadow:none;border:1px solid #999}body{background:#fff}}
+    .btn-mini.danger {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+  float: left; /* برای اینکه بره سمت چپ آیتم لیست */
+}
+.btn-mini.danger:hover {
+  background: #b91c1c;
+}
+.ownerSearchBox {
+  margin: 16px 0;
+  padding: 12px;
+  background: linear-gradient(135deg, #ffffff, #f7f9fc);
+  border: 1px solid #e1e6ef;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(20, 40, 80, 0.06);
+}
+
+.ownerSearchTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ownerSearchTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.ownerSearchCount {
+  font-size: 11px;
+  color: #777;
+  background: #eef3f8;
+  padding: 4px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.ownerSearchInput {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #d7deea;
+  border-radius: 12px;
+  padding: 0 12px;
+  font-size: 13px;
+  color: #222;
+  background: #fff;
+  outline: none;
+  box-sizing: border-box;
+  transition: 0.2s ease;
+}
+
+.ownerSearchInput:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.09);
+}
+
+.ownerSearchInput::placeholder {
+  color: #999;
+}
+
+.ownerSearchClear {
+  width: 100%;
+  margin-top: 10px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: #fff0f0;
+  color: #c62828;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ownerSearchClear:active {
+  transform: scale(0.98);
+}
+
+  </style>
+</head>
+<body>
+<div id="splash" class="splash">
+  <img src="icon-512.png" onerror="this.style.display='none'">
+  <h1>ره‌سپار ایران</h1>
+  <p>حساب جاده، دقیق‌تر از کیلومترشمار 😉</p>
+</div>
+
+<div id="app" class="app"></div>
+<div id="toast" class="toast hidden"></div>
+
+<script>
+  
+const SKEY = 'rahsepar_v0.3.0_waveA';
+
+const nowFa = () =>
+  new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+    dateStyle: 'short',
+    timeStyle: 'short'
+  }).format(new Date());
+
+const uid = () =>
+  Math.random().toString(36).slice(2) + Date.now().toString(36).slice(2);
+
+function num(v) {
+  if (v === null || v === undefined) return 0;
+  let s = String(v).trim();
+  if (!s) return 0;
+
+  s = s
+    .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+    .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+    .replace(/٬/g, '')
+    .replace(/،/g, '')
+    .replace(/[^0-9.\-]/g, '');
+
+  let n = Number(s);
+  return Number.isFinite(n) ? n : 0;
+}
+
+const toman = n => num(n).toLocaleString('fa-IR') + ' تومان';
+
+function readStorage(key) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || 'null');
+  } catch (e) {
+    console.warn('Storage parse error for key:', key, e);
+    return null;
+  }
+}
+
+let oldDb = readStorage('rahsepar_v01');
+
+let db = readStorage(SKEY) || oldDb || {
+  users: [],
+  current: null,
+  vehicles: [],
+  ownerContracts: [],
+  driverContracts: [],
+  trips: [],
+  feedback: [],
+  qa: [],
+  centerMessages: [
+    {
+      id: 'm1',
+      text: 'به ره‌سپار ایران خوش آمدید. پیام‌های مرکز از این قسمت نمایش داده می‌شود.',
+      at: nowFa()
+    }
+  ],
+  readMessages: {},
+  inbox: [],
+  editRequests: []
+};
+
+// تکمیل فیلدهای احتمالی نسخه‌های قدیمی
+db.users = Array.isArray(db.users) ? db.users : [];
+db.current = db.current || null;
+db.vehicles = Array.isArray(db.vehicles) ? db.vehicles : [];
+db.ownerContracts = Array.isArray(db.ownerContracts) ? db.ownerContracts : [];
+db.driverContracts = Array.isArray(db.driverContracts) ? db.driverContracts : [];
+db.trips = Array.isArray(db.trips) ? db.trips : [];
+db.feedback = Array.isArray(db.feedback) ? db.feedback : [];
+db.qa = Array.isArray(db.qa) ? db.qa : [];
+db.centerMessages = Array.isArray(db.centerMessages) ? db.centerMessages : [
+  {
+    id: 'm1',
+    text: 'به ره‌سپار ایران خوش آمدید. پیام‌های مرکز از این قسمت نمایش داده می‌شود.',
+    at: nowFa()
+  }
+];
+db.readMessages = db.readMessages && typeof db.readMessages === 'object' ? db.readMessages : {};
+db.inbox = Array.isArray(db.inbox) ? db.inbox : [];
+db.editRequests = Array.isArray(db.editRequests) ? db.editRequests : [];
+
+const save = () => localStorage.setItem(SKEY, JSON.stringify(db));
+
+const current = () => db.users.find(u => u.id === db.current);
+
+const toast = t => {
+  let el = document.getElementById('toast');
+  if (!el) {
+    console.warn('toast element not found');
+    return;
+  }
+  el.textContent = t;
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 3200);
+};
+
+const app = document.getElementById('app');
+if (!app) console.warn('#app not found');
+
+setTimeout(() => {
+  const splash = document.getElementById('splash');
+  if (splash) splash.classList.add('hidden');
+}, 2000);
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(err => {
+    console.warn('SW register failed:', err);
+  });
+}
+
+function header(title = 'ره‌سپار ایران') {
+  let u = current();
+
+  return `
+    <div class="top noPrint">
+      <div class="brand">
+        <img src="icon-512.png" onerror="this.style.display='none'">
+        <div>
+          <h1>${title}</h1>
+          <div class="mini">
+            ${
+              u
+                ? ('کاربر: ' + (u.first || '') + ' ' + (u.last || '') + ' | نقش: ' + (u.role === 'owner' ? 'مالک' : 'راننده'))
+                : 'نسخه MVP لوکال‌فرست'
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function nav() {
+  return `
+    <div class="toolbar noPrint">
+      <button class="btn secondary" onclick="home()">🏠 صفحه اول</button>
+      <button class="btn secondary" onclick="historyBack()">↩️ برگشت</button>
+      <button class="btn secondary" onclick="help()">❔ راهنما</button>
+      <button class="btn danger" onclick="logout()">خروج &gt;</button>
+    </div>
+  `;
+}
+
+function historyBack() {
+  const u = current();
+
+  if (!u) {
+    home();
+    return;
+  }
+
+  if (u.role === 'owner') {
+    ownerDash();
+  } else {
+    driverDash();
+  }
+}
+
+function logout() {
+  if (confirm('آیا واقعاً قصد خروج دارید؟')) {
+    db.current = null;
+    save();
+    home();
+  }
+}
+
+function help() {
+  toast('برای مخارج، مبلغ یا شرح+مبلغ را بنویس و کلید + را بزن. Enter هم کار می‌کند. بعد از ثبت سرویس، فرم قفل می‌شود و ویرایش فقط با درخواست انجام می‌شود.');
+}
+
+function home() {
+  let u = current();
+  let unread = db.centerMessages.filter(m => !(db.readMessages[u?.id || 'guest'] || []).includes(m.id)).length;
+
+  app.innerHTML =
+    header('ره‌سپار ایران') +
+    `
+    <div class="hero">
+      <img src="image.png" onerror="this.outerHTML='<div style=\\'font-size:32px;color:#0f766e;font-weight:900\\'>ره‌سپار ایران</div>'">
+      <button class="mail" onclick="messages()">✉️ ${unread ? `<span class='badge'>${unread}</span>` : ''}</button>
+    </div>
+
+    <div class="grid">
+      <button class="btn" onclick="enterRole('owner')">مالکان خودرو</button>
+      <button class="btn" onclick="enterRole('driver')">رانندگان</button>
+      <button class="btn secondary" onclick="otherModal()">سایر</button>
+      <button class="btn secondary" ${u ? '' : 'disabled'} onclick="feedbackPage()">انتقادات و پیشنهادات</button>
+      <button class="btn secondary" ${u ? '' : 'disabled'} onclick="qaPage()">پرسش و پاسخ</button>
+      <button class="btn danger" onclick="logout()">خروج &gt;</button>
+    </div>
+  `;
+}
+function messages() {
+  let u = current();
+  let uidv = u?.id || 'guest';
+
+  // 1. اول مطمئن میشیم که ساختار داده‌ها در دیتابیس وجود داره
+  if (!Array.isArray(db.centerMessages)) db.centerMessages = [];
+  if (!db.readMessages || typeof db.readMessages !== 'object') db.readMessages = {};
+
+  // 2. تمام پیام‌های موجود رو برای این کاربر به عنوان "خوانده شده" علامت می‌زنیم
+  db.readMessages[uidv] = db.centerMessages.map(m => m.id);
+  save(); // ذخیره در دیتابیس
+
+  // 3. نمایش صفحه پیام‌ها
+  app.innerHTML = header('پیام‌های مرکز') +
+    `<div class="card">
+      ${db.centerMessages.length > 0 
+        ? db.centerMessages.map(m => `
+            <div class='listitem' style="border-bottom:1px solid #eee; padding:10px 0;">
+              <b style="color:#0f766e;">✉️ پیام مدیریت</b>
+              <p style="margin:5px 0;">${m.text}</p>
+              <span class='mini' style="color:#888; font-size:11px;">${m.at}</span>
+            </div>
+          `).join('')
+        : "<p style='text-align:center; padding:20px;'>پیامی وجود ندارد.</p>"
+      }
+    </div>` + 
+    nav(); // اضافه کردن نویگیشن برای برگشت
+
+  // 4. یک کلک رشتی برای اینکه وقتی کاربر دکمه برگشت رو زد، عدد پاکت همون لحظه غیب شده باشه
+  // با این کار به محض باز شدن صفحه، محاسبات unread در پس‌زمینه آپدیت میشه
+}
+
+function ensureOwnerDriverProfile(ownerUser) {
+  if (!ownerUser || ownerUser.role !== 'owner') return null;
+
+  if (!Array.isArray(db.users)) db.users = [];
+
+  const driverId = 'DRIVER-' + ownerUser.phone;
+
+  let driverUser = db.users.find(x => x.id === driverId);
+
+  const driverData = {
+    id: driverId,
+    role: 'driver',
+    first: ownerUser.first || '',
+    last: ownerUser.last || '',
+    phone: ownerUser.phone || '',
+    pass: ownerUser.pass || '',
+    device: ownerUser.device || 'local-device',
+    at: ownerUser.at || nowFa(),
+
+    // اتصال راننده به مالک
+    ownerId: ownerUser.id,
+    isSelfDriver: true
+  };
+
+  if (driverUser) {
+    Object.assign(driverUser, driverData);
+  } else {
+    db.users.push(driverData);
+  }
+
+  return driverData;
+}
+
+
+function enterRole(role) {
+  let u = current();
+
+  if (!u) return auth(role);
+
+  // اگر کاربر راننده عادی است، اجازه ورود به پنل مالک ندارد
+  // اما اگر این راننده، نسخه راننده‌ی خود مالک باشد، می‌تواند به مالک خودش برگردد
+  if (role === 'owner' && u.role !== 'owner') {
+    if (u.ownerId) {
+      db.current = u.ownerId;
+      save();
+      return ownerDash();
+    }
+
+    return toast('دسترسی غیرمجاز: راننده اجازه ورود به پنل مالک را ندارد.');
+  }
+
+  // مالک اجازه دارد وارد پنل راننده شود
+  // چون ممکن است خودش هم راننده ماشین خودش باشد
+  if (role === 'driver' && u.role === 'owner') {
+    const driverUser = ensureOwnerDriverProfile(u);
+
+    if (!driverUser) {
+      return toast('خطا در ساخت پروفایل راننده برای مالک');
+    }
+
+    db.current = driverUser.id;
+    save();
+
+    return driverDash();
+  }
+
+  if (role === 'owner') return ownerDash();
+  return driverDash();
+}
+
+
+function auth(role) {
+  let price = role === 'owner' ? 450000 : 400000;
+
+  app.innerHTML =
+    header(role === 'owner' ? 'ثبت‌نام مالک' : 'ثبت‌نام راننده') +
+    `
+    <div class='card'>
+      <span class='pill'>پرداخت شبیه‌سازی‌شده: ${toman(price)}</span>
+
+      <div class='row'>
+        <div class='field'><label>نام</label><input id='first'></div>
+        <div class='field'><label>نام خانوادگی</label><input id='last'></div>
+        <div class='field'><label>شماره همراه</label><input id='phone'></div>
+      </div>
+
+      <div class='actions'>
+        <button class='btn' onclick="simulatePay('${role}')">تأیید پرداخت و دریافت OTP</button>
+      </div>
+
+      <div id='otpBox'></div>
+    </div>
+  ` + nav();
+}
+
+
+function simulatePay(role) {
+  document.getElementById('otpBox').innerHTML = `
+    <div class='field'>
+      <label>رمز موقت شبیه‌سازی‌شده: 1234</label>
+      <input id='otp' placeholder='1234'>
+    </div>
+
+    <div class='field'>
+      <label>رمز دائمی دلخواه</label>
+      <input id='pass' type='password'>
+    </div>
+
+    <button class='btn' onclick="finishAuth('${role}')">ثبت نهایی</button>
+  `;
+}
+
+
+function finishAuth(role) {
+  if (!Array.isArray(db.users)) db.users = [];
+
+  const otpVal = document.getElementById('otp')?.value || '';
+  const phoneVal = document.getElementById('phone')?.value.trim() || '';
+  const firstVal = document.getElementById('first')?.value.trim() || '';
+  const lastVal = document.getElementById('last')?.value.trim() || '';
+  const passVal = document.getElementById('pass')?.value || '';
+
+  if (otpVal !== '1234') return toast('کد تایید نادرست است');
+  if (!phoneVal) return toast('شماره موبایل الزامی است');
+
+  const uniqueKey = role.toUpperCase() + '-' + phoneVal;
+
+  let oldUser = db.users.find(x => x.id === uniqueKey);
+
+  let u = {
+    id: uniqueKey,
+    role: role,
+    first: firstVal,
+    last: lastVal,
+    phone: phoneVal,
+    pass: passVal,
+    device: 'local-device',
+    at: nowFa()
+  };
+
+  if (oldUser) {
+    Object.assign(oldUser, u);
+    u = oldUser;
+  } else {
+    db.users.push(u);
+  }
+
+  // اگر مالک ثبت‌نام کرد، همزمان یک پروفایل راننده برای خودش بساز
+  // تا بتواند با خودش قرارداد ببندد
+  if (role === 'owner') {
+    ensureOwnerDriverProfile(u);
+  }
+
+  db.current = uniqueKey;
+  save();
+
+  toast('ثبت‌نام با موفقیت انجام شد');
+
+  role === 'owner' ? ownerDash() : driverDash();
+}
+
+function ownerDash() {
+  app.innerHTML = header('داشبورد مالک') + `
+    <div class='grid'>
+      <button class='btn' onclick='vehiclePage()'>ثبت خودرو</button>
+
+      <button class='btn' onclick='ownerContractsPage()'>قراردادها</button>
+
+      <button class='btn' onclick='ownerReports()'>صورت‌حساب رانندگان</button>
+
+      <button class='btn'
+        style='background: linear-gradient(45deg, #28a745, #20c997); color: white; grid-column: span 2; margin-top: 10px;'
+        onclick='showRefahiMessage()'>
+        📦 ثبت‌نام و درخواست لوازم، روغن و لاستیک
+      </button>
+    </div>
+  ` + nav();
+}
+function vehiclePage(){
+  app.innerHTML = header('ثبت خودرو') + `
+    <div class='card'>
+      <div class='row'>
+        ${['پلاک','شماره هوشمند','برند','مدل','رنگ','کد دامپزشکی','راننده خودرو'].map((x,i)=>`
+          <div class='field'>
+            <label>${x}</label>
+            <input id='v${i}'>
+          </div>
+        `).join('')}
+      </div>
+      <div class='actions'>
+        <button class='btn' onclick='saveVehicle()'>ثبت خودرو</button>
+        <button class='btn secondary' onclick='vehiclePage()'>جستجو/اصلاح</button>
+      </div>
+    </div>
+
+    <div class='card'>
+      <h3>خودروهای ثبت‌شده</h3>
+      ${db.vehicles.map(v=>`
+        <div class='listitem'>
+          <div>🚚 ${v.plate} | ${v.brand} | راننده: ${v.driver}</div>
+          <button class='btn-delete' onclick="deleteItem('vehicles','${v.id}',vehiclePage,'خودرو')">🗑️ حذف</button>
+        </div>
+      `).join('') || 'خودرویی ثبت نشده'}
+    </div>
+  ` + nav();
+}
+
+function saveVehicle() {
+  if (!db.vehicles) db.vehicles = [];
+
+  const plate = document.getElementById('v_plate')?.value || '';
+  const smart = document.getElementById('v_smart')?.value || '';
+  const brand = document.getElementById('v_brand')?.value || '';
+  const model = document.getElementById('v_model')?.value || '';
+  const color = document.getElementById('v_color')?.value || '';
+  const vet = document.getElementById('v_vet')?.value || '';
+  const driver = document.getElementById('v_driver')?.value || '';
+
+  if (!plate) return toast('پلاک خودرو الزامی است');
+
+  db.vehicles.push({
+    id: uid(),
+    owner: db.current,
+    plate: plate,
+    smart: smart,
+    brand: brand,
+    model: model,
+    color: color,
+    vet: vet,
+    driver: driver,
+    at: nowFa()
+  });
+
+  save();
+  toast('خودرو با موفقیت ثبت شد');
+  vehiclePage();
+}
+function ownerContractsPage(){
+  app.innerHTML = header('قراردادهای مالک')
+    + contractForm('owner')
+    + `<div class='card'>
+        ${db.ownerContracts.map(c=>`
+          <div class='listitem'>
+            <div>${c.driverName} | ${c.type} | ${c.plate} <span class='pill'>قفل</span></div>
+            <button class='btn-delete' onclick="deleteItem('ownerContracts','${c.id}',ownerContractsPage,'قرارداد')">🗑️ حذف</button>
+          </div>
+        `).join('') || 'قراردادی ثبت نشده'}
+      </div>`
+    + nav();
+}
+
+function driverDash() {
+  app.innerHTML = header('داشبورد راننده') + `
+    <div class='grid'>
+      <button class='btn' onclick='driverContractsPage()'>قراردادها</button>
+      <button class='btn' onclick='tripPage()'>صورت‌حساب</button>
+      <button class='btn secondary' onclick='monthlyReport()'>حساب کل ماه/برج</button>
+      <button class='btn secondary' onclick='window.print()'>چاپ</button>
+    </div>
+  ` + nav();
+}
+
+function showRefahiMessage(){
+  app.innerHTML = header('ثبت‌نام و درخواست لوازم') + `
+    <div class='card'>
+      <h3>📦 ثبت‌نام و درخواست لوازم (سهمیه)</h3>
+      <p>
+        کاربر عزیز، این بخش برای ثبت‌نام و درخواست خدمات رفاهی شامل
+        لاستیک، روغن، لوازم جانبی خودرو و سایر خدمات مرتبط طراحی شده است.
+      </p>
+      <div class='actions'>
+        <button class='btn' onclick='toast("درخواست شما با موفقیت ثبت شد")'>ثبت درخواست</button>
+        <button class='btn secondary' onclick='ownerDash()'>بازگشت به داشبورد مالک</button>
+      </div>
+    </div>
+  ` + nav();
+}
+
+function showRefahiMessage() {
+    const msg = `مالک و راننده گرامی، این قسمت به‌زودی فعال خواهد شد. 
+    جهت حذف واسطه و برقراری ارتباط مستقیم با مراکز تولیدی و همچنین حذف مبالغ اضافی در این امور، در صدد هستیم تا هر چه زودتر مشکلات این قشر زحمتکش را رفع و رجوع کنیم. 
+    مراتب و نحوه عملکرد از طریق این اپلیکیشن به‌زودی فراهم و به اطلاع شما عزیزان خواهد رسید.`;
+    
+    alert(msg);
+}
+
+function driverContractsPage(){
+  app.innerHTML = header('قرارداد راننده')
+    + contractForm('driver')
+    + `<div class='card'>
+        ${db.driverContracts.map(c=>`
+          <div class='listitem'>
+            <div>${c.driverFull} با مالک ${c.ownerFull} | ${c.type} | ${c.plate} <span class='pill'>قفل</span></div>
+            <button class='btn-delete' onclick="deleteItem('driverContracts','${c.id}',driverContractsPage,'قرارداد')">🗑️ حذف</button>
+          </div>
+        `).join('') || 'قراردادی ثبت نشده'}
+      </div>`
+    + nav();
+}
+
+function viewContract(id){
+  const c = (db.driverContracts || []).find(x => x.id === id);
+  if(!c){
+    toast('قرارداد پیدا نشد');
+    return;
+  }
+
+  const contractText =
+    c.text ||
+    c.body ||
+    c.desc ||
+    c.description ||
+    `راننده: ${c.driverFull || '-'}
+مالک: ${c.ownerFull || '-'}
+نوع قرارداد: ${c.type || '-'}
+پلاک: ${c.plate || '-'}
+تاریخ: ${c.at || c.date || '-'}
+مبلغ/شرایط: ${c.amount || c.terms || 'ثبت نشده'}`;
+
+  alert(contractText);
+}
+
+function editContractRequest(id){
+  const c = (db.driverContracts || []).find(x => x.id === id);
+  if(!c){
+    toast('قرارداد پیدا نشد');
+    return;
+  }
+
+  if(c.editRequested){
+    toast('درخواست ویرایش قبلاً ثبت شده است');
+    return;
+  }
+
+  const ok = confirm('برای  قرارداد، باید مالک هم تایید کند. درخواست  ثبت شود؟');
+  if(!ok) return;
+
+  c.editRequested = true;
+  c.editRequestedBy = 'driver';
+  c.editRequestedAt = nowFa ? nowFa() : new Date().toLocaleString('fa-IR');
+  save();
+  driverContractsPage();
+  toast('درخواست ویرایش برای تایید مالک ثبت شد');
+}
+
+function deleteContractStep1(id){
+  const c = (db.driverContracts || []).find(x => x.id === id);
+  if(!c){
+    toast('قرارداد پیدا نشد');
+    return;
+  }
+
+  const step1 = confirm('آیا از حذف این قرارداد مطمئن هستید؟');
+  if(!step1) return;
+
+  const step2 = confirm('تایید نهایی: درخواست حذف برای مالک ثبت شود؟');
+  if(!step2) return;
+
+  c.deleteRequested = true;
+  c.deleteRequestedBy = 'driver';
+  c.deleteRequestedAt = nowFa ? nowFa() : new Date().toLocaleString('fa-IR');
+  save();
+  driverContractsPage();
+  toast('درخواست حذف قرارداد ثبت شد و منتظر تایید مالک است');
+}
+
+function contractForm(scope) {
+  let isD = scope === 'driver';
+
+  return `
+    <div class='card'>
+      <h3>${isD ? 'ثبت قرارداد راننده' : 'ثبت قرارداد مالک'}</h3>
+
+      <div class='row'>
+        ${
+          isD
+            ? `
+              <div class='field'><label>نام و نام‌خانوادگی راننده</label><input id='driverFull'></div>
+              <div class='field'><label>کد ملی</label><input id='nat'></div>
+              <div class='field'><label>شماره هوشمند</label><input id='driverSmart'></div>
+              <div class='field'><label>شماره همراه</label><input id='driverPhone'></div>
+              <div class='field'><label>پلاک خودرو</label><input id='plate'></div>
+              <div class='field'><label>هوشمند خودرو</label><input id='truckSmart'></div>
+              <div class='field'><label>نام مالک</label><input id='ownerFull'></div>
+              <div class='field'><label>کد ملی مالک</label><input id='ownerNat'></div>
+              <div class='field'><label>شماره همراه مالک</label><input id='ownerPhone'></div>
+            `
+            : `
+              <div class='field'><label>نام راننده</label><input id='driverName'></div>
+              <div class='field'><label>پلاک خودرو</label><input id='plate'></div>
+              <div class='field'><label>موضوع قرارداد</label><input id='subject'></div>
+            `
+        }
+
+        <div class='field'>
+          <label>نوع حقوق</label>
+          <select id='ctype'>
+            <option>درصدی</option>
+            <option>ثابت</option>
+            <option>پایه ثابت و درصد</option>
+            <option>اجاره‌ای</option>
+            <option>سرویسی</option>
+          </select>
+        </div>
+
+        <div class='field'>
+          <label>درصد</label>
+          <input id='percent' type='number'>
+        </div>
+
+        <div class='field'>
+          <label>حقوق/پایه ثابت</label>
+          <input id='base' type='number'>
+        </div>
+
+        <div class='field'>
+          <label>مبنای درصد</label>
+          <select id='percentBase'>
+            <option>صافی کرایه</option>
+            <option>کل کرایه</option>
+          </select>
+        </div>
+
+        <div class='field'>
+          <label>تاریخ شمسی از</label>
+          <input id='from' placeholder='1403/01/01'>
+        </div>
+
+        <div class='field'>
+          <label>تا</label>
+          <input id='to' placeholder='1403/12/29'>
+        </div>
+      </div>
+
+      <div class='field'>
+        <label>توضیحات/شروط قرارداد</label>
+        <textarea id='desc'></textarea>
+      </div>
+
+      <button class='btn' onclick="saveContract('${scope}')">ثبت نهایی و قفل قرارداد</button>
+    </div>
+  `;
+}
+
+function saveContract(scope) {
+  if (!db.driverContracts) db.driverContracts = [];
+  if (!db.ownerContracts) db.ownerContracts = [];
+
+  let c = {
+    id: uid(),
+    user: db.current,
+    type: document.getElementById('ctype')?.value || '',
+    percent: num(document.getElementById('percent')?.value || 0),
+    base: num(document.getElementById('base')?.value || 0),
+    percentBase: document.getElementById('percentBase')?.value || '',
+    from: document.getElementById('from')?.value || '',
+    to: document.getElementById('to')?.value || '',
+    desc: document.getElementById('desc')?.value || '',
+    locked: true,
+    at: nowFa()
+  };
+
+  if (scope === 'driver') {
+    Object.assign(c, {
+      driverFull: document.getElementById('driverFull')?.value || '',
+      nat: document.getElementById('nat')?.value || '',
+      driverSmart: document.getElementById('driverSmart')?.value || '',
+      driverPhone: document.getElementById('driverPhone')?.value || '',
+      plate: document.getElementById('plate')?.value || '',
+      truckSmart: document.getElementById('truckSmart')?.value || '',
+      ownerFull: document.getElementById('ownerFull')?.value || '',
+      ownerNat: document.getElementById('ownerNat')?.value || '',
+      ownerPhone: document.getElementById('ownerPhone')?.value || ''
+    });
+
+    db.driverContracts.push(c);
+  } else {
+    Object.assign(c, {
+      driverName: document.getElementById('driverName')?.value || '',
+      plate: document.getElementById('plate')?.value || '',
+      subject: document.getElementById('subject')?.value || ''
+    });
+
+    if (!c.driverName) return toast('نام راننده الزامی است');
+    if (!c.plate) return toast('پلاک خودرو الزامی است');
+
+    db.ownerContracts.push(c);
+  }
+
+  save();
+  toast('قرارداد ثبت و قفل شد');
+
+  scope === 'driver' ? driverContractsPage() : ownerContractsPage();
+}
+
+
+function itemInput(label,id){
+  return `<div class='field'>
+    <label>${label}</label>
+
+    <div class='itemEntry'>
+      <input id='${id}Text' placeholder='مثلا ناهار 100000 سپس کلید + را بزن'>
+      <button type='button' class='plusBtn' id='${id}AddBtn' onclick="addItem('${id}')" title='افزودن آیتم'>+</button>
+    </div>
+
+    <div class='sumBox'>
+      <span class='pill'>جمع: <b id='${id}Sum'>0 تومان</b></span>
+    </div>
+
+    <div id='${id}Items' class='itemsLine'></div>
+    <input type='hidden' id='${id}EditIndex' value=''>
+  </div>`;
+}
+
+window.addEventListener('keydown',e=>{
+  if((e.key==='Enter' || e.key===' ') && e.target && e.target.id?.endsWith('Text')){
+    e.preventDefault();
+    addItem(e.target.id.replace('Text',''));
+  }
+});
+
+let tempItems={fees:[],driverCost:[],carCost:[]};
+
+function itemAmountFromText(text){
+  return num(text);
+}
+
+function itemDisplayText(item){
+  let raw=(item.text||'').trim();
+  if(!raw) return toman(item.amount);
+
+  let onlyNumber=raw
+    .replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+    .replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+    .replace(/٬/g,'')
+    .replace(/،/g,'')
+    .replace(/[^0-9.\-]/g,'')
+    .trim();
+
+  if(onlyNumber && Number(onlyNumber).toString()===String(num(raw))){
+    return toman(item.amount);
+  }
+
+  return raw;
+}
+
+function addItem(id){
+  let el=document.getElementById(id+'Text');
+  let editEl=document.getElementById(id+'EditIndex');
+  if(!el) return;
+
+  let text=el.value.trim();
+  let amount=itemAmountFromText(text);
+
+  if(!text || amount===0){
+    toast('اول شرح یا مبلغ معتبر وارد کن، بعد + را بزن.');
+    return;
+  }
+
+  let editIndex=editEl && editEl.value!=='' ? Number(editEl.value) : -1;
+  let item={text,amount};
+
+  if(editIndex>=0 && tempItems[id] && tempItems[id][editIndex]){
+    tempItems[id][editIndex]=item;
+    editEl.value='';
+    toast('آیتم ویرایش شد.');
+  }else{
+    tempItems[id].push(item);
+  }
+
+  el.value='';
+  renderItems(id);
+  calculateTripIfVisible();
+  el.focus();
+}
+
+function editItem(id,index){
+  if(!tempItems[id] || !tempItems[id][index]) return;
+
+  let el=document.getElementById(id+'Text');
+  let editEl=document.getElementById(id+'EditIndex');
+
+  el.value=tempItems[id][index].text;
+  editEl.value=String(index);
+  el.focus();
+
+  toast('آیتم برای ویرایش داخل کادر برگشت. اصلاح کن و + را بزن.');
+}
+
+function deleteItem(target, indexOrId, callback, label = 'مورد نظر') {
+  // تایید مرحله اول
+  if (!confirm(`آیا از حذف این ${label} اطمینان دارید؟`)) return;
+  // تایید مرحله دوم (حساسیت بیشتر)
+  if (!confirm(`هشدار: حذف ${label} غیرقابل بازگشت است. ادامه می‌دهی؟`)) return;
+
+  // حالت ۱: حذف از tempItems (اگر index عدد باشد)
+  if (typeof indexOrId === 'number') {
+    if (tempItems[target] && tempItems[target][indexOrId] !== undefined) {
+      tempItems[target].splice(indexOrId, 1);
+      
+      let editEl = document.getElementById(target + 'EditIndex');
+      if (editEl) editEl.value = '';
+
+      renderItems(target);
+      calculateTripIfVisible();
+      toast(`${label} حذف شد.`);
+    }
+  } 
+  // حالت ۲: حذف از دیتابیس اصلی db (اگر id رشته/String باشد)
+  else if (typeof indexOrId === 'string' && db[target]) {
+    db[target] = db[target].filter(item => item.id !== indexOrId);
+    save(); // ذخیره در localStorage
+    
+    toast(`${label} با موفقیت حذف شد`);
+    
+    // اگر نیاز به رندر مجدد صفحه بود
+    if (typeof callback === 'function') callback();
+  }
+}
+
+function renderItems(id){
+  let box=document.getElementById(id+'Items');
+  let sumBox=document.getElementById(id+'Sum');
+  if(!box || !sumBox) return;
+
+  let total=tempItems[id].reduce((a,b)=>a+num(b.amount),0);
+
+  box.innerHTML=tempItems[id].map((x,i)=>`
+    <span class='itemChip'>
+      <b>${itemDisplayText(x)} +</b>
+      <button type='button' class='itemEdit' onclick="editItem('${id}',${i})">ویرایش</button>
+      <button type='button' class='itemDelete' onclick="deleteItem('${id}',${i})">×</button>
+    </span>
+  `).join('');
+
+  sumBox.textContent=toman(total);
+}
+
+function calculateTripIfVisible(){
+  if(document.getElementById('calc') && document.getElementById('fare')){
+    calculateTrip();
+  }
+}
+
+function tripPage(){
+  tempItems = {fees:[], driverCost:[], carCost:[]};
+
+  app.innerHTML = header('صورت‌حساب سرویس') + `
+    <div class="card" style="background: #fff3cd; border: 1px solid #ffeeba; margin: 10px; padding: 10px; border-radius: 8px;">
+      <label style="display: flex; align-items: center; cursor: pointer; gap: 10px; flex-wrap: wrap;">
+        
+        <input 
+          type="checkbox" 
+          id="fastAccessCheck" 
+          ${localStorage.getItem('fast_access') === 'true' ? 'checked' : ''} 
+          onchange="localStorage.setItem('fast_access', this.checked); if(this.checked) toast('میانبر فعال شد. از این پس مستقیم به این صفحه می‌آیید.');"
+        >
+
+        <span style="font-size: 0.85rem; font-weight: bold; color: #856404;">
+          🚀 میانبر: ورود مستقیم به ثبت حساب در باز کردن برنامه
+        </span>
+
+        <button 
+          type="button"
+          onclick="disableFastAccess()" 
+          style="margin-right:10px; padding:2px 8px; border-radius:5px; border:none; background:#ff4757; color:white; font-size:0.7rem; cursor:pointer;">
+          لغو میانبر
+        </button>
+
+      </label>
+    </div>
+
+    <div class="card" id="tripFormCard">
+      <div class="row">
+
+        ${['شماره بارنامه','شرکت حمل و نقل','شماره تماس شرکت','مبدأ','مقصد','شماره تماس مقصد','نوع بار','تاریخ بارگیری شمسی','تاریخ تخلیه شمسی','بانک واریزی'].map((x,i)=>`
+          <div class="field">
+            <label>${x}</label>
+            <input class="tripField" id="t${i}">
+          </div>
+        `).join('')}
+
+        <div class="field">
+          <label>مبلغ کل کرایه</label>
+          <input class="tripField" id="fare" type="number" oninput="calculateTripIfVisible()">
+        </div>
+
+        <div class="field">
+          <label>مبلغ واریزی</label>
+          <input class="tripField" id="paid" type="number" oninput="calculateTripIfVisible()">
+        </div>
+
+        <div class="field">
+          <label>تاریخ واریز</label>
+          <input class="tripField" id="paidAt">
+        </div>
+
+        <div class="field">
+          <label>طلب/بدهی از سرویس قبل</label>
+          <input class="tripField" id="prevBalance" type="number" oninput="calculateTripIfVisible()">
+        </div>
+
+      </div>
+
+      ${itemInput('کمیسیون، بارگیری، باسکول، عوارض، انعام و غیره','fees')}
+      ${itemInput('مخارج راننده','driverCost')}
+      ${itemInput('مخارج ماشین','carCost')}
+
+      <div id="lockNotice"></div>
+
+      <div class="actions">
+        <button class="btn" id="calcBtn" onclick="calculateTrip()">محاسبه</button>
+        <button class="btn secondary" id="saveTripBtn" onclick="saveTrip()">ثبت و قفل سرویس</button>
+      </div>
+
+      <div id="editRequestArea"></div>
+      <div id="calc"></div>
+
+    </div>
+  ` + nav();
+}
+
+function activeContract(){
+  return db.driverContracts.filter(c=>c.user===db.current).slice(-1)[0]||{type:'درصدی',percent:20,base:0,percentBase:'صافی کرایه'};
+}
+
+function calcValues(){
+  let c=activeContract();
+  let farev=num(fare.value);
+  let fees=tempItems.fees.reduce((a,b)=>a+b.amount,0);
+  let dc=tempItems.driverCost.reduce((a,b)=>a+b.amount,0);
+  let cc=tempItems.carCost.reduce((a,b)=>a+b.amount,0);
+  let net=farev-fees;
+  let baseFor=c.percentBase==='کل کرایه'?farev:net;
+
+  let salary=0;
+  if(c.type==='درصدی') salary=net*c.percent/100;
+  else if(c.type==='ثابت') salary=c.base;
+  else if(c.type==='پایه ثابت و درصد') salary=c.base+(baseFor*c.percent/100);
+  else salary=c.base;
+
+  let rem=salary-dc-cc;
+  let final=rem+num(prevBalance.value);
+
+  let paidv=num(paid.value);
+  let diff=paidv-farev;
+
+  let deductions=0;
+  let extraFare=0;
+  if(diff<0) deductions=Math.abs(diff);
+  if(diff>0) extraFare=diff;
+
+  return {
+    c,farev,fees,net,dc,cc,salary,rem,final,paidv,deductions,extraFare,prev:num(prevBalance.value)
+  };
+}
+
+function calculateTrip(){
+  let v=calcValues();
+  calc.innerHTML=
+  `<div class='card'>
+    <h3> کادر محاسبه</h3>
+    ${[
+      ['مبلغ کل کرایه',v.farev],
+      ['کمیسیون و غیره',v.fees],
+      ['صافی بارنامه / صافی کرایه',v.net],
+      ['درصد تعیین‌شده',v.c.percent+'٪'],
+      ['حقوق راننده',v.salary],
+      ['مخارج راننده',v.dc],
+      ['مخارج ماشین',v.cc],
+      ['باقیمانده طلب/بدهی راننده',v.rem],
+      ['طلب یا بدهی از سرویس قبل',v.prev],
+      ['مبلغ باقیمانده نهایی',v.final]
+    ].map((r,i)=>
+      `<div class='calcbox'>
+        <b>${i+1}. ${r[0]}</b>
+        <span>:</span>
+        <span class='money ${typeof r[1]==='number' && r[1]<0?'neg':'pos'}'>${typeof r[1]==='number'?toman(r[1]):r[1]}</span>
+      </div>`
+    ).join('')}
+
+    <div class='calcbox'>
+      <b>کسورات</b><span>:</span><span class='money neg'>${toman(v.deductions)}</span>
+    </div>
+    <div class='calcbox'>
+      <b>اضافه‌کرایه</b><span>:</span><span class='money pos'>${toman(v.extraFare)}</span>
+    </div>
+  </div>`;
+}
+
+function saveTrip(){
+  let v=calcValues();
+
+  let trip={
+    id:uid(),
+    user:db.current,
+    locked:true,
+    editStatus:'locked',
+    editRequested:false,
+    at:nowFa(),
+    bill:t0.value,
+    company:t1.value,
+    companyPhone:t2.value,
+    from:t3.value,
+    to:t4.value,
+    destPhone:t5.value,
+    cargo:t6.value,
+    loadAt:t7.value,
+    unloadAt:t8.value,
+    bank:t9.value,
+    paid:num(paid.value),
+    paidAt:paidAt.value,
+    items:JSON.parse(JSON.stringify(tempItems)),
+    ...v
+  };
+
+  db.trips.push(trip);
+  save();
+
+  lockCurrentTripForm(trip.id);
+  toast('سرویس ثبت و قفل شد. برای تغییر، باید درخواست ویرایش ثبت شود.');
+}
+
+function lockCurrentTripForm(tripId){
+  document.querySelectorAll('.tripField').forEach(el=>el.disabled=true);
+  ['feesText','driverCostText','carCostText'].forEach(id=>{
+    let el=document.getElementById(id);
+    if(el) el.disabled=true;
+  });
+  ['feesAddBtn','driverCostAddBtn','carCostAddBtn','saveTripBtn'].forEach(id=>{
+    let el=document.getElementById(id);
+    if(el) el.disabled=true;
+  });
+
+  document.querySelectorAll('.itemEdit,.itemDelete').forEach(btn=>btn.disabled=true);
+
+  let editReqBtn=document.getElementById('editReqBtn');
+  if(editReqBtn){
+    editReqBtn.classList.remove('hidden');
+    editReqBtn.dataset.tripId=tripId;
+  }
+
+  let lockNotice=document.getElementById('lockNotice');
+  if(lockNotice){
+    lockNotice.innerHTML=`<div class='lockedNote'>این صورت‌حساب ثبت و قفل شد. برای تغییر اطلاعات، از کلید «درخواست ویرایش» استفاده کن.</div>`;
+  }
+}
+
+function requestTripEdit(){
+  let btn=document.getElementById('editReqBtn');
+  let tripId=btn?.dataset?.tripId;
+  if(!tripId) return toast('شناسه سرویس پیدا نشد.');
+
+  let area=document.getElementById('editRequestArea');
+  area.innerHTML=`<div class='editRequestBox'>
+    <label>علت درخواست ویرایش</label>
+    <textarea id='editReason' placeholder='مثلا مبلغ مخارج ماشین اشتباه وارد شده یا آیتمی جا افتاده است...'></textarea>
+    <div class='actions'>
+      <button class='btn warn' onclick="sendTripEditRequest('${tripId}')">ارسال درخواست ویرایش</button>
+    </div>
+  </div>`;
+}
+
+function sendTripEditRequest(tripId){
+  let reasonEl=document.getElementById('editReason');
+  let reason=(reasonEl?.value||'').trim();
+
+  if(!reason){
+    toast('لطفاً علت درخواست ویرایش را بنویس.');
+    return;
+  }
+
+  let trip=db.trips.find(t=>t.id===tripId);
+  if(!trip){
+    toast('سرویس موردنظر پیدا نشد.');
+    return;
+  }
+
+  trip.editRequested=true;
+  trip.editStatus='pending_owner_approval';
+  trip.editReason=reason;
+  trip.editRequestedAt=nowFa();
+
+  db.editRequests=db.editRequests||[];
+  db.editRequests.push({
+    id:uid(),
+    tripId,
+    user:db.current,
+    reason,
+    status:'pending',
+    at:nowFa()
+  });
+
+  save();
+
+  let area=document.getElementById('editRequestArea');
+  if(area){
+    area.innerHTML=`<div class='lockedNote'>درخواست ویرایش ثبت شد و در انتظار تأیید مالک است.</div>`;
+  }
+
+  toast('درخواست ویرایش برای مالک ثبت شد.');
+}
+
+function shareTrip(){
+  let v=calcValues();
+  let text=`ره‌سپار ایران
+بارنامه: ${t0.value}
+مسیر: ${t3.value} به ${t4.value}
+کرایه کل: ${toman(v.farev)}
+مبلغ واریزی: ${toman(v.paidv)}
+کسورات: ${toman(v.deductions)}
+اضافه‌کرایه: ${toman(v.extraFare)}
+صافی کرایه: ${toman(v.net)}
+حقوق راننده: ${toman(v.salary)}
+مخارج راننده: ${toman(v.dc)}
+مخارج ماشین: ${toman(v.cc)}
+مانده نهایی: ${toman(v.final)}`;
+  if(navigator.share) navigator.share({text});
+  else{
+    navigator.clipboard?.writeText(text);
+    toast('متن ارسال آماده و کپی شد.');
+  }
+}
+
+// ۱. ابتدا دو نسخه برای ناوبری می‌سازیم که دکمه برگشت در داشبورد نباشد
+const navDash = () => `
+  <div class="toolbar noPrint">
+    <button class="btn secondary" onclick="home()">🏠 صفحه اول</button>
+    <button class="btn secondary" onclick="help()">❔ راهنما</button>
+    <button class="btn danger" onclick="logout()">خروج ></button>
+  </div>`;
+
+const navNormal = () => `
+  <div class="toolbar noPrint">
+    <button class="btn secondary" onclick="home()">🏠 صفحه اول</button>
+    <button class="btn secondary" onclick="history.back()">↩️ برگشت</button>
+    <button class="btn secondary" onclick="help()">❔ راهنما</button>
+    <button class="btn danger" onclick="logout()">خروج ></button>
+  </div>`;
+
+// ۲. تابع گزارش ماهانه اصلاح شده
+function monthlyReport() {
+    let u = current();
+    let allTrips = Array.isArray(db.trips) ? db.trips : [];
+    let trips = [];
+
+    // منطق دسترسی: اگر مالک بود همه را ببیند، اگر راننده بود فقط مال خودش
+    if (u && u.role === 'owner') {
+        trips = allTrips; 
+    } else {
+        trips = allTrips.filter(t => t.user === db.current);
+    }
+
+    let sum = k => trips.reduce((a, b) => a + num(b[k]), 0);
+
+    // ساختن دکمه‌های سرویس‌ها
+    let tripsButtons = trips.map((t, index) => `
+        <button class="btn secondary" style="width:100%; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; padding:12px; border:1px solid #ddd;" onclick="viewTripDetail('${t.id}', ${index + 1})">
+            <span>📦 سرویس شماره ${index + 1}</span>
+            <span style="font-size:0.85em; color:#666;">${t.from || '؟'} ← ${t.to || '؟'}</span>
+            <span>◀️</span>
+        </button>
+    `).join('');
+
+    app.innerHTML = header('حساب کل ماه / برج') + `
+        <div class='card'>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3>گزارش مالی ماهانه</h3>
+                <button class="btn" style="background:#25D366; padding:5px 10px; font-size:0.8em;" onclick="shareFullMonthlyReport()">📤 اشتراک کل ماه</button>
+            </div>
+            <hr>
+            ${[
+                ['جمع کل کرایه‌ها', sum('farev')],
+                ['جمع کسورات (کمیسیون+انعام...)', sum('fees')],
+                ['جمع کل صافی کرایه‌ها', sum('net')],
+                ['جمع کل مخارج راننده', sum('dc')],
+                ['جمع کل مخارج ماشین', sum('cc')],
+                ['جمع کل بدهی/طلب راننده', sum('final')]
+            ].map(r => `
+                <div class='calcbox'>
+                    <b>${r[0]}</b>
+                    <span class='money'>${toman(r[1])}</span>
+                </div>
+            `).join('')}
+            
+            <div class="actions">
+                <button class="btn" onclick="window.print()">🖨️ چاپ</button>
+                <button class="btn secondary" onclick="toast('ماه قفل شد')">🔒 بستن ماه</button>
+            </div>
+        </div>
+
+        <div class='card' style="background:#f9f9f9;">
+            <h4 style="margin-top:0;">📋 لیست سرویس‌های ثبت شده:</h4>
+            ${tripsButtons || '<p style="text-align:center; color:#999;">هنوز سرویسی ثبت نشده است.</p>'}
+        </div>
+    ` + navNormal(); // اینجا برگشت لازم است چون از داشبورد آمدیم بیرون
+}
+
+// ۳. اصلاح داشبوردها برای حذف دکمه برگشت
+function ownerDash() {
+    app.innerHTML = header('داشبورد مالک') + `
+    <div class='grid'>
+        <button class='btn' onclick='vehiclePage()'>ثبت خودرو</button>
+        <button class='btn' onclick='ownerContractsPage()'>قراردادها</button>
+        <button class='btn' onclick='ownerReports()'>صورت‌حساب رانندگان</button>
+      <button class='btn' style="background-color: #27ae60;" onclick='showRefahiMessage()'>
+          📦 ثبت‌نام و درخواست لوازم
+        </button>
+        <button class='btn secondary' onclick='driverDash()'>ورود به پنل راننده</button>
+    </div>` + navDash(); // دکمه برگشت ندارد
+}
+
+function driverDash() {
+    app.innerHTML = header('داشبورد راننده') + `
+    <div class='grid'>
+        <button class='btn' onclick='driverContractsPage()'>قراردادها</button>
+        <button class='btn' onclick='tripPage()'>صورت‌حساب</button>
+        <button class='btn secondary' onclick='monthlyReport()'>حساب کل ماه/برج</button>
+        <button class='btn secondary' onclick='window.print()'>چاپ</button>
+    </div>` + navDash(); // دکمه برگشت ندارد
+}
+
+function viewTripDetail(tripId, serviceNumber) {
+    const t = db.trips.find(x => x.id === tripId);
+    if (!t) return toast('سرویس پیدا نشد!');
+
+    // استخراج هوشمند داده‌ها (اگر نام فیلدها فرق داشت، باز هم بخونه)
+    const billNo = t.bill || (t.items && t.items[0]) || '---';
+    const company = t.from || (t.items && t.items[1]) || '---';
+    const originCity = t.origin || (t.items && t.items[3]) || '---';
+    const destCity = t.dest || (t.items && t.items[4]) || '---';
+    const cargoType = t.cargo || (t.items && t.items[6]) || 'بار مشخص نشده';
+    
+    // محاسبه مبالغ (پشتیبانی از هر دو فرمت ذخیره‌سازی)
+    const totalPrice = t.price || t.farev || 0;
+    const deductions = (t.commission || 0) + (t.tax || 0) + (t.fees || 0) + (t.dc || 0) + (t.cc || 0);
+    const finalPrice = t.final || (totalPrice - deductions);
+
+    app.innerHTML = header(`جزئیات سرویس ${serviceNumber}`) + `
+        <div class="card" id="printableInvoice">
+            <div style="text-align:center; border-bottom:2px solid #eee; padding-bottom:10px; margin-bottom:15px;">
+                <h2 style="margin:0;">🧾 صورت‌حساب سرویس ${serviceNumber}</h2>
+                <small style="color:#666;">شناسه: ${t.id}</small>
+            </div>
+            
+            <div class="calcbox">
+                <b>📦 بارنامه:</b> <span>${billNo}</span>
+            </div>
+            <div class="calcbox">
+                <b>🏢 شرکت:</b> <span>${company}</span>
+            </div>
+            <div class="calcbox">
+                <b>📍 مسیر:</b> <span>${originCity} به ${destCity}</span>
+            </div>
+             <div class="calcbox">
+                <b>🚛 نوع بار:</b> <span>${cargoType}</span>
+            </div>
+            
+            <hr style="border:0; border-top:1px dashed #ccc; margin:15px 0;">
+            
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span>💰 کرایه کل:</span>
+                <b>${totalPrice.toLocaleString()} تومان</b>
+            </div>
+            <div style="display:flex; justify-content:space-between; color:#d32f2f; margin-bottom:8px;">
+                <span>📉 مجموع کسورات:</span>
+                <b>${deductions.toLocaleString()} تومان</b>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-top:1px solid #eee; padding-top:10px; font-weight:bold; color:#2e7d32; font-size:1.1em;">
+                <span>✅ صافی راننده:</span>
+                <span>${finalPrice.toLocaleString()} تومان</span>
+            </div>
+
+            <div class="actions" style="margin-top:25px; display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn" onclick="window.print()" style="flex:1;">🖨️ چاپ فاکتور</button>
+                <button class="btn secondary" onclick="shareTripDetail('${t.id}')" style="flex:1;">📲 اشتراک‌گذاری</button>
+                <button class="btn" style="background:#f57c00; width:100%;" onclick="requestEditTrip('${t.id}')">✏️ درخواست ویرایش</button>
+            </div>
+        </div>` + nav();
+}
+
+// این تابع رو هم حتماً پایینش بذار تا دکمه اشتراک‌گذاری کار کنه
+function shareTripDetail(id) {
+    const t = db.trips.find(x => x.id === id);
+    const bill = t.bill || (t.items && t.items[0]) || 'نامشخص';
+    const origin = t.origin || (t.items && t.items[3]) || '---';
+    const dest = t.dest || (t.items && t.items[4]) || '---';
+    const final = t.final || (t.price - (t.commission + t.tax)) || 0;
+
+    const text = `🚛 گزارش سرویس ره‌سپار\n📦 بارنامه: ${bill}\n📍 مسیر: ${origin} به ${dest}\n💰 صافی راننده: ${final.toLocaleString()} تومان`;
+    
+    if (navigator.share) {
+        navigator.share({ title: 'فاکتور ره‌سپار', text: text }).catch(() => {});
+    } else {
+        alert(text);
+    }
+}
+// این تابع رو هم زیرش اضافه کن برای کار کردن دکمه اشتراک‌گذاری
+function shareTripDetail(id) {
+    const t = db.trips.find(x => x.id === id);
+    const text = `🚛 گزارش سرویس ره‌سپار\n📦 بار: ${t.bill}\n📍 مسیر: ${t.origin} به ${t.dest}\n💰 صافی: ${t.final.toLocaleString()} تومان`;
+    if (navigator.share) {
+        navigator.share({ title: 'فاکتور ره‌سپار', text: text });
+    } else {
+        alert(text);
+    }
+}
+
+// تابع کمکی برای اشتراک‌گذاری متنی (مناسب برای واتس‌اپ و تلگرام)
+function shareSingleTrip(id) {
+    const t = db.trips.find(x => x.id === id);
+    const text = `🚛 گزارش سرویس ره‌سپار\n📦 بارنامه: ${t.bill}\n📍 مسیر: ${t.from} به ${t.to}\n💰 صافی کرایه: ${toman(t.net)}\n🔧 مخارج: ${toman(num(t.dc)+num(t.cc))}\n✅ مانده نهایی: ${toman(t.final)}`;
+    
+    if (navigator.share) {
+        navigator.share({ title: 'گزارش سرویس', text: text }).catch(() => {});
+    } else {
+        copyToClipboard(text);
+        toast("متن گزارش کپی شد!");
+    }
+}
+
+function shareFullMonthlyReport() {
+    toast("در حال آماده‌سازی گزارش کل ماه...");
+    // اینجا در آینده می‌توان خروجی PDF یا تصویر گرفت
+}
+
+function copyToClipboard(text) {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+}
+function escapeAttr(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function filterOwnerTrips(keyword) {
+  const allTrips = Array.isArray(db.trips) ? db.trips : [];
+  const q = String(keyword || '').trim().toLowerCase();
+
+  if (!q) return allTrips;
+
+  return allTrips.filter(t => {
+    return [
+      t.bill,
+      t.driverName,
+      t.user,
+      t.from,
+      t.to,
+      t.notes,
+      t.paidAt
+    ].some(item => String(item || '').toLowerCase().includes(q));
+  });
+}
+
+function focusOwnerSearch(keyword) {
+  const input = document.getElementById('ownerTripSearch');
+  if (!input) return;
+
+  input.value = String(keyword || '');
+}
+function getOwnerTripsHtml(trips, keyword = '') {
+  const allTrips = Array.isArray(db.trips) ? db.trips : [];
+
+  if (!trips.length) {
+    return `
+      <p style="text-align:center; padding:20px;">
+        ${keyword ? 'موردی با این جستجو پیدا نشد.' : 'هنوز صورتحسابی ارسال نشده است.'}
+      </p>
+    `;
+  }
+
+  return trips.map((t, index) => {
+    const tripId = t.id || ('trip_' + index);
+    const finalAmount = num(t.final);
+    const deductions = num(t.deductions);
+    const extraFare = num(t.extraFare);
+    const paid = num(t.paid);
+
+    return `
+      <div class='listitem' style="margin-bottom:12px;">
+        <div style="margin-bottom:8px">
+          <b>بارنامه:</b> ${t.bill || '-'} |
+          <b>مسیر:</b> ${t.from || '-'} به ${t.to || '-'}
+        </div>
+
+        <div style="margin-bottom:6px;">
+          <b>راننده:</b> ${t.driverName || t.user || '-'}
+        </div>
+
+        <div>
+          مانده نهایی:
+          <b class='${finalAmount >= 0 ? 'pos' : 'neg'}'>${toman(finalAmount)}</b>
+        </div>
+
+        <div class='mini' style="margin-top:6px;">
+          کسورات:
+          <span class='neg'>${toman(deductions)}</span>
+          |
+          اضافه‌کرایه:
+          <span class='pos'>${toman(extraFare)}</span>
+        </div>
+
+        <div class='mini' style="margin-top:4px;">
+          مبلغ واریزی:
+          <span>${toman(paid)}</span>
+          |
+          تاریخ واریز:
+          <span>${t.paidAt || 'ثبت نشده'}</span>
+        </div>
+
+        ${t.notes ? `
+          <div style="margin-top:8px; font-size:12px; color:#555;">
+            <b>توضیحات:</b> ${t.notes}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+}
+function updateOwnerTripsSearch(keyword = '') {
+  const trips = filterOwnerTrips(keyword);
+  const allTrips = Array.isArray(db.trips) ? db.trips : [];
+
+  const listBox = document.getElementById('ownerTripsList');
+  const countBox = document.getElementById('ownerSearchCount');
+  const clearBtn = document.getElementById('ownerSearchClear');
+
+  if (countBox) {
+    countBox.textContent = keyword
+      ? `${trips.length} نتیجه از ${allTrips.length}`
+      : `${allTrips.length} صورت‌حساب`;
+  }
+
+  if (listBox) {
+    listBox.innerHTML = getOwnerTripsHtml(trips, keyword);
+  }
+
+  if (clearBtn) {
+    clearBtn.style.display = keyword ? 'block' : 'none';
+  }
+}
+
+let ownerSearchTimer = null;
+
+function ownerReports(keyword = '') {
+  const allTrips = Array.isArray(db.trips) ? db.trips : [];
+  let trips = filterOwnerTrips(keyword);
+
+  // محاسبات مبالغ
+  const totalFinal = trips.reduce((sum, t) => sum + num(t.final), 0);
+  const totalDeductions = trips.reduce((sum, t) => sum + num(t.deductions), 0);
+  const totalExtraFare = trips.reduce((sum, t) => sum + num(t.extraFare), 0);
+  const totalPaid = trips.reduce((sum, t) => sum + num(t.paid), 0);
+
+  // رندر کل صفحه (فقط یک بار)
+  app.innerHTML = header('صورت‌حساب رانندگان برای مالک') + `
+    <div class='card'>
+      <h3>لیست صورت‌حساب‌های دریافتی</h3>
+
+      <div class='calcbox'><b>تعداد</b><span></span><span>${trips.length}</span></div>
+      <div class='calcbox'><b>جمع مانده نهایی</b><span></span><span class='money ${totalFinal >= 0 ? 'pos' : 'neg'}'>${toman(totalFinal)}</span></div>
+      <div class='calcbox'><b>جمع کسورات</b><span></span><span class='money neg'>${toman(totalDeductions)}</span></div>
+      <div class='calcbox'><b>جمع اضافه‌کرایه</b><span></span><span class='money pos'>${toman(totalExtraFare)}</span></div>
+      <div class='calcbox'><b>جمع واریزی</b><span></span><span class='money'>${toman(totalPaid)}</span></div>
+
+      <!-- باکس جستجو (این بخش ثابت می‌ماند تا کیبورد بسته نشود) -->
+      <div class="ownerSearchBox">
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input
+            id="ownerTripSearch"
+            class="ownerSearchInput"
+            type="text"
+            placeholder="جستجو: بارنامه، راننده، مسیر..."
+            value="${escapeAttr(keyword)}"
+            oninput="handleOwnerSearch(this.value)"
+            style="flex:1"
+          >
+          <button class="btn" style="width:70px; margin:0; height:45px;" onclick="ownerReports(document.getElementById('ownerTripSearch').value)">بگرد</button>
+        </div>
+        <div id="ownerSearchCount" style="font-size:11px; margin-top:5px; color:#666;">
+           ${keyword ? `${trips.length} نتیجه از ${allTrips.length}` : `${allTrips.length} صورت‌حساب کل`}
+        </div>
+        ${keyword ? `<div style="color:blue; font-size:12px; cursor:pointer; margin-top:5px;" onclick="ownerReports('')">❌ حذف فیلتر</div>` : ''}
+      </div>
+
+      <hr>
+
+      <!-- ظرفِ لیست (فقط محتویات این DIV موقع جستجو عوض می‌شود) -->
+      <div id="ownerTripsList">
+        ${renderOwnerTripsList(trips, keyword)}
+      </div>
+
+      <div class='actions'>
+        <button class='btn' onclick='monthlyReport()'>جمع کل ماهانه</button>
+        <button class='btn secondary' onclick='window.print()'>چاپ گزارش</button>
+      </div>
+    </div>
+  ` + nav();
+}
+
+// این تابع کمکی رو حتماً زیر تابع بالا اضافه کن
+function renderOwnerTripsList(trips, keyword) {
+  if (!trips.length) {
+    return `<p style="text-align:center; padding:20px;">${keyword ? 'موردی با این جستجو پیدا نشد.' : 'هنوز صورتحسابی ارسال نشده است.'}</p>`;
+  }
+
+  return trips.map((t, index) => {
+    const tripId = t.id || ('trip_' + index);
+    const finalAmount = num(t.final);
+    const deductions = num(t.deductions);
+    const extraFare = num(t.extraFare);
+    const paid = num(t.paid);
+
+    return `
+      <div class='listitem' style="position:relative; padding-bottom: 50px; margin-bottom:12px; border-right:4px solid #ddd;">
+        <div style="margin-bottom:8px">
+          <b>بارنامه:</b> ${t.bill || '-'} | <b>مسیر:</b> ${t.from || '-'} به ${t.to || '-'}
+        </div>
+        <div style="margin-bottom:6px;"><b>راننده:</b> ${t.driverName || t.user || '-'}</div>
+        <div>مانده نهایی: <b class='${finalAmount >= 0 ? 'pos' : 'neg'}'>${toman(finalAmount)}</b></div>
+        <div class='mini' style="margin-top:6px;">
+          کسورات: <span class='neg'>${toman(deductions)}</span> | اضافه‌کرایه: <span class='pos'>${toman(extraFare)}</span>
+        </div>
+        <div class='mini' style="margin-top:4px;">
+          واریزی: <span>${toman(paid)}</span> | تاریخ: <span>${t.paidAt || 'ثبت نشده'}</span>
+        </div>
+
+        <!-- بخش جزئیات -->
+        <div id="details-${tripId}" class="hidden" style="margin-top:15px; padding:8px; border-top:1px dashed #ccc; font-size:12px; background:#f9f9f9; border-radius:8px;">
+          <div style="color:var(--brand); font-weight:bold; margin-bottom:8px;">📋 ریز مخارج:</div>
+          <div style="margin-bottom:6px;"><b>فنی:</b> ${typeof renderDetailItems === 'function' ? renderDetailItems(t.items?.fees) : '-'}</div>
+          <div style="margin-bottom:6px;"><b>راننده:</b> ${typeof renderDetailItems === 'function' ? renderDetailItems(t.items?.driverCost) : '-'}</div>
+          <div style="margin-top:8px; border-top:1px solid #eee; padding-top:8px;"><b>توضیحات:</b> ${t.notes || '-'}</div>
+        </div>
+
+        <!-- دکمه جزئیات -->
+        <button class='btn secondary' style="position:absolute; left:10px; bottom:10px; padding:5px 12px; font-size:12px; height:32px; min-width:auto;" onclick="toggleDetails('${tripId}')">
+          مشاهده جزئیات
+        </button>
+
+        <!-- دکمه‌های ویرایش اگر درخواستی باشد -->
+        ${t.editRequested ? `
+          <div class='editRequestBox' style="margin-top:12px; background:#fff4e5; padding:10px; border-radius:5px;">
+            <b>⚠️ درخواست ویرایش:</b> ${t.editReason || '-'}
+            <div class='actions' style="margin-top:10px">
+              <button class='btn warn' onclick="approveTripEdit('${tripId}')">تأیید</button>
+              <button class='btn danger' onclick="rejectTripEdit('${tripId}')">رد</button>
+            </div>
+          </div>
+        ` : ''}
+      </div>`;
+  }).join('');
+}
+
+function approveTripEdit(tripId){
+  let trip=db.trips.find(t=>t.id===tripId);
+  if(!trip) return toast('سرویس پیدا نشد.');
+
+  trip.editStatus='approved';
+  trip.editRequested=false;
+  trip.editApprovedAt=nowFa();
+
+  if(db.editRequests){
+    db.editRequests
+      .filter(r=>r.tripId===tripId && r.status==='pending')
+      .forEach(r=>r.status='approved');
+  }
+
+  save();
+  toast('درخواست ویرایش تأیید شد.');
+  ownerReports();
+}
+
+function rejectTripEdit(tripId){
+  let trip=db.trips.find(t=>t.id===tripId);
+  if(!trip) return toast('سرویس پیدا نشد.');
+
+  trip.editStatus='rejected';
+  trip.editRequested=false;
+  trip.editRejectedAt=nowFa();
+
+  if(db.editRequests){
+    db.editRequests
+      .filter(r=>r.tripId===tripId && r.status==='pending')
+      .forEach(r=>r.status='rejected');
+  }
+
+  save();
+  toast('درخواست ویرایش رد شد.');
+  ownerReports();
+}
+
+function feedbackPage(){
+  app.innerHTML=header('انتقادات و پیشنهادات')+`<div class='card'>
+    <textarea id='fbText' placeholder='متن خود را بنویسید...'></textarea>
+    <button class='btn' onclick='sendFeedback()'>ارسال به مرکز</button>
+  </div>
+  <div class='card'>
+    <h3>متن‌های ارسال‌شده شما</h3>
+    ${db.feedback.filter(f=>f.user===db.current).map(f=>`<div class='listitem'><p>${f.text}</p><span class='mini'>${f.at} | غیرقابل ویرایش</span></div>`).join('')}
+  </div>`+nav();
+}
+
+function sendFeedback(){
+  db.feedback.push({id:uid(),user:db.current,identity:current(),text:fbText.value,at:nowFa(),locked:true});
+  save();
+  feedbackPage();
+}
+
+function qaPage(){
+  app.innerHTML=header('پرسش و پاسخ')+`<div class='card'>
+    <textarea id='qText' placeholder='سؤال خود را بنویسید...'></textarea>
+    <button class='btn' onclick='sendQ()'>ارسال سؤال</button>
+  </div>
+  <div class='card'>${db.qa.filter(q=>q.user===db.current).map(q=>`<div class='listitem'><b>سؤال:</b><p>${q.text}</p><b>پاسخ مرکز:</b><p>${q.answer||'در انتظار پاسخ'}</p></div>`).join('')}</div>`+nav();
+}
+
+function sendQ(){
+  db.qa.push({id:uid(),user:db.current,identity:current(),text:qText.value,answer:'',at:nowFa()});
+  save();
+  toast('پیام شما ارسال شد و در فرصت مناسب پاسخ را دریافت خواهید کرد');
+  qaPage();
+}
+
+home();
+// برای باز و بسته کردن بخش جزئیات
+function toggleDetails(id) {
+  const el = document.getElementById(`details-${id}`);
+  if(el.classList.contains('hidden')) {
+    el.classList.remove('hidden');
+    event.target.textContent = 'بستن جزئیات';
+  } else {
+    el.classList.add('hidden');
+    event.target.textContent = 'مشاهده جزئیات';
+  }
+}
+
+// برای نمایش لیست اقلام هزینه در پنل مالک
+function renderDetailItems(items) {
+  if (!items || !Array.isArray(items) || !items.length) {
+    return `<span class="mini">موردی ثبت نشده</span>`;
+  }
+
+  return `
+    <ul style="margin:6px 0 0 18px; padding:0;">
+      ${items.map(it => `
+        <li style="margin-bottom:4px;">
+          ${it.title || it.name || 'بدون عنوان'}:
+          <b>${toman(num(it.amount))}</b>
+        </li>
+      `).join('')}
+    </ul>
+  `;
+}
+// --- Wave A: New Features (Archive & Finance) ---
+
+const normalizeText = (t) => t ? String(t).replace(/ی/g, 'ی').replace(/ک/g, 'ک').trim() : '';
+const sum = (arr, key) => arr.reduce((s, a) => s + (Number(a[key]) || 0), 0);
+
+function filterTrips(trips, query) {
+    if (!query) return trips;
+    const q = normalizeText(query);
+    return trips.filter(t => 
+        normalizeText(t.origin).includes(q) || 
+        normalizeText(t.dest).includes(q) || 
+        normalizeText(t.driver).includes(q)
+    );
+}
+
+function renderArchiveList(query = '') {
+    const listDiv = document.getElementById('archiveList');
+    const filtered = filterTrips(db.trips || [], query);
+
+    if (filtered.length === 0) {
+        listDiv.innerHTML = "<p style='text-align:center; color:#888; padding:20px;'>سفری یافت نشد.</p>";
+        return;
+    }
+
+    listDiv.innerHTML = filtered.reverse().map(t => {
+        // تشخیص فیلدها برای جلوگیری از undefined
+        const origin = t.origin || t.from || 'نامشخص';
+        const dest = t.dest || t.to || 'نامشخص';
+        const driver = t.driver || t.name || 'ثبت نشده';
+        const price = t.price || t.amount || 0;
+        const date = t.date || '---';
+
+        return `
+        <div class="card trip-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h4 style="margin:0;">${origin} ← ${dest}</h4>
+                <span class="badge" style="background:#e3f2fd; color:#1976d2; padding:5px 10px; border-radius:15px; font-size:0.8em;">
+                    ${toman(price)}
+                </span>
+            </div>
+            <div style="margin-top:10px; font-size:0.9em; color:#666;">
+                <span>👤 راننده: ${driver}</span> | <span>📅 تاریخ: ${date}</span>
+            </div>
+            
+            ${db.userRole === 'owner' ? `
+                <div style="margin-top:12px; border-top:1px dashed #ddd; padding-top:10px; display:flex; gap:10px;">
+                    <button onclick="viewTripDetail('${t.id}')" style="flex:1; background:#4CAF50; color:white; border:none; padding:8px; border-radius:5px;">
+                        🔍 بررسی و تایید
+                    </button>
+                </div>
+            ` : ''}
+        </div>`;
+    }).join('');
+}
+
+function renderArchiveList(query) {
+    const listDiv = document.getElementById('archiveList');
+    const filtered = filterTrips(db.trips || [], query);
+    
+    listDiv.innerHTML = filtered.map(t => `
+        <div class='card'>
+            <div style="display:flex; justify-content:space-between;">
+                <b>${t.origin} ➔ ${t.dest}</b>
+                <span class="pill">${toman(t.price)}</span>
+            </div>
+            <small style="color:#666">👤 راننده: ${t.driver} | 📅 تاریخ: ${t.date || '---'}</small>
+        </div>
+    `).join('') || '<p style="text-align:center; margin-top:20px;">نتیجه‌ای یافت نشد ⭕</p>';
+}
+function disableFastAccess() {
+    localStorage.removeItem('fast_access');
+    driverDash(); // راننده رو برمی‌گردونه به داشبورد اصلی
+}
+function handleOwnerSearch(value) {
+  clearTimeout(ownerSearchTimer);
+  ownerSearchTimer = setTimeout(() => {
+    updateOwnerTripsSearch(value);
+  }, 150);
+}
+function clearOwnerSearch() {
+  const input = document.getElementById('ownerTripSearch');
+  if (input) input.value = '';
+
+  updateOwnerTripsSearch('');
+}
+function otherModal() {
+    app.innerHTML = header('سایر امکانات') + `
+    <div class="card">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <span style="font-size: 50px;">📋</span>
+        </div>
+        <h3 style="text-align:center; color:var(--brand);">بخش سایر و راهنما</h3>
+        
+        <div style="line-height:2; text-align:justify; padding:15px; background:#f0f7f4; border-radius:12px; border:1px solid #e0e0e0;">
+            <p><b>کاربرعزیز خوش آمدی!</b></p>
+            <p>این بخش برای دسترسی به موارد زیر در نظر گرفته شده است:</p>
+            <hr style="border:0; border-top:1px solid #ccc; margin:10px 0;">
+            <ul style="list-style:none; padding:0;">
+                <li>🔹 مشاهده قوانین و مقررات حمل و نقل</li>
+                <li>🔹 ارتباط با پشتیبانی فنی اپلیکیشن</li>
+                <li>🔹 تنظیمات اعلان‌ها و پروفایل</li>
+            </ul>
+        </div>
+
+        <div class="actions" style="margin-top:20px;">
+            <button class="btn" onclick="mainMenu()">بازگشت به منوی اصلی</button>
+        </div>
+    </div>
+    ` + nav();
+}
+
+function deleteTripForOwner(id) {
+    if(confirm('کاربرعزیز مطمئنی این صورت‌حساب کلاً پاک بشه؟')) {
+        db.trips = db.trips.filter(t => (t.id || t.bill) !== id);
+        saveDb(); // ذخیره در حافظه گوشی
+        ownerReports(); // رفرش صفحه
+        alert('با موفقیت حذف شد.');
+    }
+}
+
+</script>
+</body>
+</html>
