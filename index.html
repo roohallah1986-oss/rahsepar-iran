@@ -274,8 +274,7 @@ setTimeout(() => {
   if (splash) splash.classList.add('hidden');
 }, 2000);
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(err => {
+if ('serviceWorker' in navigator) {  navigator.serviceWorker.register('sw.js').catch(err => {
     console.warn('SW register failed:', err);
   });
 }
@@ -472,7 +471,7 @@ function auth(role) {
     header(role === 'owner' ? 'ثبت‌نام مالک' : 'ثبت‌نام راننده') +
     `
     <div class='card'>
-      <span class='pill'>پرداخت شبیه‌سازی‌شده: ${toman(price)}</span>
+      <span class='pill'>مبلغ حق عضویت: ${toman(price)}</span>
 
       <div class='row'>
         <div class='field'><label>نام</label><input id='first'></div>
@@ -481,7 +480,9 @@ function auth(role) {
       </div>
 
       <div class='actions'>
-        <button class='btn' onclick="simulatePay('${role}')">تأیید پرداخت و دریافت OTP</button>
+        <button class='btn' onclick="simulatePay('${role}')">
+        پرداخت و ارسال کد تایید
+        </button>
       </div>
 
       <div id='otpBox'></div>
@@ -489,19 +490,22 @@ function auth(role) {
   ` + nav();
 }
 
+
+
 async function simulatePay(role) {
+
   const phoneVal = document.getElementById('phone')?.value.trim() || '';
 
-  // اعتبارسنجی شماره موبایل ایران
   if (!phoneVal) {
     return toast('شماره موبایل الزامی است');
   }
 
   if (!/^09\d{9}$/.test(phoneVal)) {
-    return toast('شماره موبایل معتبر نیست. مثال: 09123456789');
+    return toast('شماره موبایل معتبر نیست (مثال: 09123456789)');
   }
 
   try {
+
     toast('در حال ارسال کد تایید...');
 
     const res = await fetch('http://localhost:5000/api/request-otp', {
@@ -522,29 +526,42 @@ async function simulatePay(role) {
     }
 
     document.getElementById('otpBox').innerHTML = `
+
       <div class='field'>
-        <label>کد تایید پیامک‌شده را وارد کنید</label>
-        <input id='otp' inputmode='numeric' autocomplete='one-time-code' placeholder='کد تایید'>
+        <label>کد تایید پیامک شده</label>
+        <input id='otp'
+        inputmode='numeric'
+        autocomplete='one-time-code'
+        placeholder='کد تایید'>
       </div>
 
       <div class='field'>
-        <label>رمز دائمی دلخواه</label>
-        <input id='pass' type='password' placeholder='رمز عبور دلخواه'>
+        <label>رمز عبور دائمی</label>
+        <input id='pass' type='password'
+        placeholder='رمز دلخواه خود را وارد کنید'>
       </div>
 
-      <button class='btn' onclick="finishAuth('${role}')">ثبت نهایی</button>
+      <button class='btn'
+      onclick="finishAuth('${role}')">
+      ثبت نهایی
+      </button>
+
     `;
 
-    toast('کد تایید برای شما پیامک شد');
+    toast('کد تایید برای شما ارسال شد');
 
   } catch (err) {
+
     console.error('request otp error:', err);
-    toast('ارتباط با سرور برقرار نشد. لطفاً Backend را بررسی کنید');
+
+    toast('ارتباط با سرور برقرار نشد');
+
   }
+
 }
 
-
 async function finishAuth(role) {
+
   if (!Array.isArray(db.users)) db.users = [];
 
   const otpVal = document.getElementById('otp')?.value.trim() || '';
@@ -552,6 +569,8 @@ async function finishAuth(role) {
   const firstVal = document.getElementById('first')?.value.trim() || '';
   const lastVal = document.getElementById('last')?.value.trim() || '';
   const passVal = document.getElementById('pass')?.value || '';
+
+
 
   if (!phoneVal) {
     return toast('شماره موبایل الزامی است');
@@ -566,10 +585,13 @@ async function finishAuth(role) {
   }
 
   if (!passVal) {
-    return toast('رمز دائمی دلخواه را وارد کنید');
+    return toast('رمز عبور را وارد کنید');
   }
 
+
+
   try {
+
     toast('در حال بررسی کد تایید...');
 
     const res = await fetch('http://localhost:5000/api/verify-otp', {
@@ -590,9 +612,13 @@ async function finishAuth(role) {
       return toast(data.message || 'کد تایید نادرست است');
     }
 
+
+
     const uniqueKey = role.toUpperCase() + '-' + phoneVal;
 
     let oldUser = db.users.find(x => x.id === uniqueKey);
+
+
 
     let u = {
       id: uniqueKey,
@@ -605,30 +631,52 @@ async function finishAuth(role) {
       at: nowFa()
     };
 
+
+
     if (oldUser) {
+
       Object.assign(oldUser, u);
       u = oldUser;
+
     } else {
+
       db.users.push(u);
+
     }
 
-    // اگر مالک ثبت‌نام کرد، همزمان یک پروفایل راننده برای خودش بساز
-    // تا بتواند با خودش قرارداد ببندد
+
+
+    // اگر مالک باشد یک پروفایل راننده هم برای خودش ساخته می‌شود
     if (role === 'owner') {
       ensureOwnerDriverProfile(u);
     }
 
+
+
     db.current = uniqueKey;
+
     save();
+
+
 
     toast('ثبت‌نام با موفقیت انجام شد');
 
-    role === 'owner' ? ownerDash() : driverDash();
+
+
+    role === 'owner'
+      ? ownerDash()
+      : driverDash();
+
+
 
   } catch (err) {
+
     console.error('verify otp error:', err);
-    toast('خطا در تایید کد. لطفاً ارتباط با سرور را بررسی کنید');
+
+    toast('خطا در تایید کد');
+
   }
+
 }
 
 function ownerDash() {
@@ -2085,3 +2133,4 @@ window.addEventListener('appinstalled', () => {
 </script>
 </body>
 </html>
+
