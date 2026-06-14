@@ -6,6 +6,7 @@
   <title>ره‌سپار ایران</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon-512-new.png" type="image/png">
+  <link rel="shortcut icon" href="icon-512-new.png">
 <link rel="apple-touch-icon" href="icon-512-new.png">
   <meta name="theme-color" content="#0f766e">
   <style>
@@ -276,10 +277,10 @@ setTimeout(() => {
   if (splash) splash.classList.add('hidden');
 }, 2000);
 
-if ('serviceWorker' in navigator) {  navigator.serviceWorker.register('sw.js').catch(err => {
-   console.warn('SW register failed:', err);
-   });
- }
+//if ('serviceWorker' in navigator) {  navigator.serviceWorker.register('sw.js').catch(err => {
+ //  console.warn('SW register failed:', err);
+ //  });
+// }
 
 function header(title = 'ره‌سپار ایران') {
   let u = current();
@@ -287,8 +288,7 @@ function header(title = 'ره‌سپار ایران') {
   return `
     <div class="top noPrint">
       <div class="brand">
-        <img src="icon-512.png?v=2" onerror="this.style.display='none'">
-        <div>
+
           <h1>${title}</h1>
           <div class="mini">
             ${
