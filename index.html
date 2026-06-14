@@ -274,10 +274,10 @@ setTimeout(() => {
   if (splash) splash.classList.add('hidden');
 }, 2000);
 
-if ('serviceWorker' in navigator) {  navigator.serviceWorker.register('sw.js').catch(err => {
-    console.warn('SW register failed:', err);
-  });
-}
+//if ('serviceWorker' in navigator) {  navigator.serviceWorker.register('sw.js').catch(err => {
+ //   console.warn('SW register failed:', err);
+  //});
+ //}
 
 function header(title = 'ره‌سپار ایران') {
   let u = current();
