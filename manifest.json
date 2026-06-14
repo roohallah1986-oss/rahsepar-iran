@@ -7,11 +7,10 @@
   "theme_color": "#0f766e",
   "description": "حسابداری رانندگان و مالکان خودرو سنگین",
   "icons": [
-    {
-      "src": "icon-512-fixed.png",
-      "sizes": "512x512",
-      "type": "jpg/png",
-      "purpose": "any maskable"
-    }
-  ]
-}
+  {
+    "src": "icon-512-new.png",
+    "sizes": "512x512",
+    "type": "image/png",
+    "purpose": "any maskable"
+  }
+]
